@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const _ = require('lodash')
+const axios = require('axios');
 
 const {
   GraphQLObjectType,
@@ -28,8 +28,10 @@ const rootQuery = new GraphQLObjectType({
     user: {
       type: UserType,
       args: { id: { type: GraphQLString } },
-      resolve(parentValue, args) {
-        return _.find(users, { id: args.id });
+      async resolve(parentValue, args) {
+        const response = await axios.get(`http://localhost:3000/users/${args.id}`);
+
+        return response.data;
       }
     },
   }
