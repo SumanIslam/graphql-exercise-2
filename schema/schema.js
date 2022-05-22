@@ -25,6 +25,11 @@ const UserType = new GraphQLObjectType({
     age: { type: GraphQLInt},
     company: {
       type: CompanyType,
+      async resolve(parentValue, args) {
+        const res = await axios.get(`http://localhost:3000/companies/${parentValue.companyId}`);
+
+        return res.data;
+      }
     }
   }
 });
